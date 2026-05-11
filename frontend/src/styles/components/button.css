@@ -1,0 +1,137 @@
+.button {
+  font-family: var(--font-family);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  position: relative;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Variants */
+.button-primary {
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+}
+
+.button-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-800));
+  box-shadow: var(--shadow-lg);
+}
+
+.button-secondary {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-800);
+  border: 1px solid var(--color-gray-300);
+}
+
+.button-secondary:hover:not(:disabled) {
+  background-color: var(--color-gray-200);
+  border-color: var(--color-gray-400);
+}
+
+.button-outline {
+  background-color: transparent;
+  border: 2px solid var(--color-primary-500);
+  color: var(--color-primary-600);
+}
+
+.button-outline:hover:not(:disabled) {
+  background-color: var(--color-primary-50);
+}
+
+.button-ghost {
+  background-color: transparent;
+  color: var(--color-gray-700);
+  border: 1px solid transparent;
+}
+
+.button-ghost:hover:not(:disabled) {
+  background-color: var(--color-gray-100);
+}
+
+/* Sizes */
+.button-small {
+  padding: var(--spacing-2) var(--spacing-3);
+  font-size: var(--font-size-sm);
+  height: 36px;
+  min-width: 80px;
+}
+
+.button-medium {
+  padding: var(--spacing-3) var(--spacing-5);
+  font-size: var(--font-size-base);
+  height: 44px;
+  min-width: 100px;
+}
+
+.button-large {
+  padding: var(--spacing-4) var(--spacing-8);
+  font-size: var(--font-size-lg);
+  height: 52px;
+  min-width: 120px;
+}
+
+/* Full width */
+.button-full-width {
+  width: 100%;
+}
+
+/* Loading state */
+.button-loading {
+  opacity: 0.8;
+  cursor: wait;
+}
+
+.button-spinner {
+  display: flex;
+  align-items: center;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Icons */
+.button-icon-left,
+.button-icon-right {
+  display: flex;
+  align-items: center;
+}
+
+.button-icon-left {
+  margin-right: var(--spacing-1);
+}
+
+.button-icon-right {
+  margin-left: var(--spacing-1);
+}
+
+.button-text {
+  white-space: nowrap;
+}

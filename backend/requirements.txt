@@ -1,0 +1,10 @@
+# StyleForge 2D Backend Dependencies
+fastapi
+uvicorn
+python-multipart
+python-dotenv
+gradio_client
+Pillow
+httpx            # Required for proxying requests to the 3D service
+opencv-python-headless  # Image enhancement (enhancer.py)
+numpy

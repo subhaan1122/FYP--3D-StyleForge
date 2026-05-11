@@ -1,0 +1,182 @@
+﻿# =============================================================================
+# Avatar 3D Pipeline Configuration
+# =============================================================================
+# This config is for the 3D module.
+# The 3D service runs on port 5001, the 2D backend runs on port 5000.
+# The 2D backend proxies 3D requests to this service.
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# LHM (Large Human Model) Settings
+# ---------------------------------------------------------------------------
+lhm:
+  # ---------------------------------------------------------------------------
+  # Hi3D cloud API mode (hitem3d.ai)
+  # When true, the pipeline skips all local LHM/GPU work and calls the
+  # Hi3D REST API instead.  Credentials are read from styleforge/.env.
+  # ---------------------------------------------------------------------------
+  use_hitem3d: true
+
+  # Path to the LHM source code (relative to styleforge/ or absolute).
+  # Override with env var LHM_REPO_PATH for portability.
+  repo_path: "../models/lhm-source"
+
+  # Path to the LHM weights (pretrained_models + exps/releases).
+  # The setup script creates directory junctions from here into repo_path.
+  weights_path: "../models/lhm-weights"
+
+  # Which LHM model variant to use.
+  # Options: LHM-MINI (16 GB), LHM-500M (18 GB), LHM-1B (22 GB)
+  # RTX 3090 (24 GB) â†’ LHM-1B is recommended for best quality.
+  model_name: "LHM-1B"
+
+  # Device for LHM inference
+  device: "cuda:0"
+
+  # Use half precision (FP16) to save VRAM â€” recommended for RTX 3090
+  use_fp16: true
+
+  # Input image resolution expected by LHM.
+  # LHM's runner processes images at max_tgt_size=896 internally.
+  # Feeding 512 forced LHM to upscale via INTER_AREA (blurry) before inference,
+  # losing texture detail. Matching 896 here passes full-resolution data directly.
+  input_resolution: 896
+
+# ---------------------------------------------------------------------------
+# Gaussian-to-Mesh Reconstruction Settings
+# ---------------------------------------------------------------------------
+mesh_reconstruction:
+  # Minimum opacity threshold for filtering Gaussians (0.0 - 1.0)
+  # Lowered 0.15 -> 0.10: captures more surface-covering Gaussians while
+  # still excluding near-transparent halo noise. Two-pass outlier removal
+  # cleans any remaining noise points after this filter.
+  opacity_threshold: 0.10
+
+  # Poisson reconstruction depth (higher = finer detail, more VRAM)
+  # Raised from 9 -> 10 -> 11 for maximum surface detail. RTX 3090 (24GB) handles depth=11.
+  # Depth 11 resolves ~2x smaller surface features vs depth 10.
+  poisson_depth: 11
+
+  # Density threshold for trimming Poisson output
+  # Lowered from 10 -> 5: spike removal now handles boundary artifacts,
+  # so we can keep more of the reconstructed surface.
+  density_threshold_percentile: 5
+
+  # Minimum cluster size to keep (removes floating fragments)
+  # Lowered from 500 -> 100: arms/legs can be small clusters.
+  min_cluster_size: 100
+
+  # Statistical outlier removal parameters
+  # Relaxed from 30/2.0 â†’ 25/2.5 to keep more points in sparse regions.
+  outlier_nb_neighbors: 25
+  outlier_std_ratio: 2.5
+
+# ---------------------------------------------------------------------------
+# Mesh Processing / Optimization
+# ---------------------------------------------------------------------------
+mesh_processing:
+  # Target number of faces for the final mesh (for web performance)
+  # Raised from 80k -> 100k -> 200k -> 350k.
+  # After Loop subdivision (~700k faces) quadric decimation keeps more faces
+  # in high-curvature regions (face, ears, hands). 350k is fast in Three.js.
+  target_faces: 350000
+
+  # Smoothing iterations (Taubin smoothing — volume-preserving)
+  # 1 Taubin iteration at lambda=0.5/mu=-0.53 smooths jagged edges without mesh shrinkage.
+  # Taubin preserves fine surface features (ridges, folds) that Laplacian erodes.
+  smoothing_iterations: 1
+
+  # Taubin lambda (positive pass). mu is hardcoded at -0.53 (Taubin's recommended value).
+  smoothing_lambda: 0.5
+
+  # Whether to fill holes in the mesh
+  fill_holes: true
+
+  # Maximum hole size to fill (number of edges)
+  # Raised from 100 â†’ 1000 so trimesh can fill the larger structural
+  # gaps left after Poisson reconstruction.
+  max_hole_size: 1000
+
+# ---------------------------------------------------------------------------
+# Texture Settings
+# ---------------------------------------------------------------------------
+texture:
+  # Texture atlas resolution (power of 2)
+  atlas_resolution: 2048
+
+  # Whether to bake vertex colors into a texture atlas
+  # Disabled: the cv2-based baking pipeline produces incorrect dark colors.
+  # Vertex colors are exported directly into the GLB (COLOR_0 attribute)
+  # which Three.js / GLTFLoader handles correctly with vertexColors=true.
+  bake_texture_atlas: false
+
+  # Texture format for intermediate files
+  format: "png"
+
+# ---------------------------------------------------------------------------
+# GLB Export Settings
+# ---------------------------------------------------------------------------
+glb_export:
+  # Whether to embed textures inside the GLB file
+  embed_textures: true
+
+  # Apply Draco compression to reduce file size
+  draco_compression: false
+
+  # GLB target file size warning threshold (MB)
+  max_size_warning_mb: 50
+
+# ---------------------------------------------------------------------------
+# GPU / Memory Settings
+# ---------------------------------------------------------------------------
+gpu:
+  # Which CUDA device to use
+  device: "cuda:0"
+
+  # Maximum VRAM usage (GB) â€” set below your GPU max to leave headroom
+  max_vram_gb: 20
+
+  # Force garbage collection between pipeline stages
+  aggressive_cleanup: true
+
+  # Use mixed precision (FP16) where possible
+  mixed_precision: true
+
+# ---------------------------------------------------------------------------
+# Server Settings (3D service)
+# ---------------------------------------------------------------------------
+server:
+  host: "0.0.0.0"
+  port: 5001
+  workers: 1
+  reload: false
+
+  # CORS origins â€” the 2D backend on port 5000 and React dev server
+  cors_origins:
+    - "http://localhost:5002"
+    - "http://localhost:5173"
+    - "http://localhost:5000"
+    - "http://127.0.0.1:5002"
+    - "http://127.0.0.1:5173"
+    - "http://127.0.0.1:5000"
+
+# ---------------------------------------------------------------------------
+# 2D Backend Integration
+# ---------------------------------------------------------------------------
+integration:
+  # Where the 2D backend saves its try-on output images
+  # Use a relative path from the project root, or an absolute path.
+  # Environment variable TRYON_OUTPUTS_DIR overrides this.
+  tryon_outputs_dir: "backend/outputs"
+
+  # The 2D backend base URL (for health checks and image fetching)
+  backend_2d_url: "http://localhost:5000"
+
+# ---------------------------------------------------------------------------
+# Paths (relative to the 3d/ project root)
+# ---------------------------------------------------------------------------
+paths:
+  output_dir: "outputs"
+  temp_dir: "temp"
+  upload_dir: "uploads"
+

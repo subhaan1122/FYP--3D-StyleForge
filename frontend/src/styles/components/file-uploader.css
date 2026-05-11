@@ -1,0 +1,223 @@
+.file-uploader {
+  width: 100%;
+}
+
+.file-uploader-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-700);
+}
+
+.required {
+  color: var(--color-danger);
+  margin-left: var(--spacing-1);
+}
+
+.file-uploader-dropzone {
+  width: 100%;
+  padding: var(--spacing-8) var(--spacing-6);
+  border: 2px dashed var(--color-gray-300);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-gray-50);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.file-uploader-dropzone:hover:not(.disabled):not(.loading),
+.file-uploader-dropzone.dragging:not(.disabled):not(.loading) {
+  border-color: var(--color-primary-500);
+  background-color: var(--color-primary-50);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.file-uploader-dropzone.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.file-uploader-dropzone.loading {
+  cursor: wait;
+  opacity: 0.8;
+}
+
+.dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4);
+  text-align: center;
+}
+
+.dropzone-icon {
+  color: var(--color-gray-400);
+  transition: color var(--transition-normal);
+}
+
+.file-uploader-dropzone:hover .dropzone-icon,
+.file-uploader-dropzone.dragging .dropzone-icon {
+  color: var(--color-primary-500);
+}
+
+.dropzone-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.dropzone-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-700);
+  margin: 0;
+}
+
+.dropzone-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+  margin: 0;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-gray-200);
+  border-top-color: var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* File Preview */
+.file-preview {
+  width: 100%;
+}
+
+.preview-image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--color-gray-100);
+  margin-bottom: var(--spacing-2);
+}
+
+.preview-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: var(--spacing-3);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.preview-image-container:hover .preview-overlay {
+  opacity: 1;
+}
+
+.remove-button {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--color-danger);
+  transition: all var(--transition-fast);
+}
+
+.remove-button:hover {
+  background-color: white;
+  transform: scale(1.05);
+}
+
+.remove-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.preview-filename {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  text-align: center;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 var(--spacing-2);
+}
+
+/* Validation Overlay */
+.validation-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  border-radius: var(--radius-xl);
+  z-index: 10;
+}
+
+.validation-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid var(--color-gray-200);
+  border-top-color: var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.validation-overlay p {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .file-uploader-dropzone {
+    padding: var(--spacing-6) var(--spacing-4);
+  }
+  
+  .preview-image-container {
+    height: 180px;
+  }
+  
+  .dropzone-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .dropzone-title {
+    font-size: var(--font-size-sm);
+  }
+  
+  .dropzone-subtitle {
+    font-size: var(--font-size-xs);
+  }
+}

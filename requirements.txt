@@ -1,0 +1,71 @@
+# =============================================================================
+# Avatar 3D Pipeline — Python Dependencies
+# =============================================================================
+# Install with:   pip install -r requirements.txt
+# PyTorch must be installed separately with CUDA support.
+# See setup.ps1 for the full installation sequence.
+# =============================================================================
+
+
+# =============================
+# StyleForge Python Requirements
+# =============================
+# Install with: pip install -r requirements.txt
+# PyTorch (torch/torchvision) must be installed separately for your CUDA version.
+# Some optional dependencies are commented below.
+
+# --- Web Framework ---
+fastapi
+uvicorn
+python-multipart
+
+# --- Data Validation ---
+pydantic
+
+# --- Configuration ---
+pyyaml
+python-dotenv
+
+# --- Image Processing ---
+Pillow
+opencv-python-headless
+
+# --- Numerical ---
+numpy
+scipy
+
+# --- 3D Geometry & Mesh ---
+trimesh
+open3d
+plyfile
+
+# --- Deep Learning (install separately via setup.ps1 with CUDA) ---
+# torch
+# torchvision
+
+# --- LHM (optional, needed only if using direct import mode) ---
+omegaconf
+
+# --- GPU Monitoring ---
+gputil
+psutil
+
+# --- Logging ---
+loguru
+
+# --- HTTP / Networking ---
+httpx
+requests
+urllib3
+
+# --- Gradio Client (2D backend) ---
+gradio_client
+
+# --- Testing ---
+pytest
+tqdm
+
+# --- Optional / Not found ---
+# xatlas         # UV unwrapping (optional, C++/pip install xatlas)
+# basicsr        # For Real-ESRGAN (optional, not installed by default)
+# realesrgan     # For Real-ESRGAN (optional, not installed by default)

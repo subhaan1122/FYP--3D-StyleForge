@@ -1,0 +1,199 @@
+.model-viewer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.viewer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4);
+  border-bottom: 1px solid var(--color-gray-200);
+  background: white;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.header-left h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+  margin: 0;
+}
+
+.viewer-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.viewer-canvas {
+  flex: 1;
+  position: relative;
+  background: var(--color-gray-50);
+}
+
+.loading-overlay,
+.error-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 10;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid var(--color-gray-200);
+  border-top-color: var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-overlay p {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+  margin: 0;
+}
+
+.viewer-controls {
+  width: 300px;
+  padding: var(--spacing-4);
+  border-left: 1px solid var(--color-gray-200);
+  background: white;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.controls-group h4 {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-700);
+  margin: 0 0 var(--spacing-3) 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.control-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-2);
+}
+
+.control-buttons button {
+  min-width: auto;
+}
+
+.background-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.bg-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  background: white;
+  color: var(--color-gray-700);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.bg-button:hover {
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-50);
+}
+
+.bg-button.active {
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-50);
+  color: var(--color-primary-700);
+  font-weight: var(--font-weight-medium);
+}
+
+.bg-preview {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-gray-300);
+}
+
+.bg-preview.white {
+  background: white;
+}
+
+.bg-preview.gray {
+  background: var(--color-gray-200);
+}
+
+.bg-preview.transparent {
+  background: linear-gradient(45deg, var(--color-gray-300) 25%, transparent 25%),
+              linear-gradient(-45deg, var(--color-gray-300) 25%, transparent 25%),
+              linear-gradient(45deg, transparent 75%, var(--color-gray-300) 75%),
+              linear-gradient(-45deg, transparent 75%, var(--color-gray-300) 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+}
+
+.instructions {
+  margin: 0;
+  padding-left: var(--spacing-4);
+  list-style-type: disc;
+}
+
+.instructions li {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  margin-bottom: var(--spacing-1);
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .viewer-container {
+    flex-direction: column;
+  }
+  
+  .viewer-controls {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--color-gray-200);
+    max-height: 200px;
+  }
+  
+  .control-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

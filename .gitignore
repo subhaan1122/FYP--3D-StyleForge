@@ -1,0 +1,68 @@
+# =============================================================================
+# StyleForge — .gitignore
+# =============================================================================
+
+
+# =============================
+# StyleForge .gitignore
+# =============================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+venv*/
+.venv*/
+env*/
+*.pyc
+
+# --- IDE/Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- OS/Explorer ---
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# --- Logs ---
+logs/
+*.log
+
+# --- Runtime Data ---
+outputs/
+temp/
+uploads/
+backend/outputs/
+backend/temp/
+
+# --- Node.js/Frontend ---
+node_modules/
+frontend/dist/
+frontend/node_modules/
+
+# --- Environment/Secrets ---
+.env*
+backend/.env*
+frontend/.env*
+
+# --- Model Weights/Large Files ---
+pretrained_models/
+*.ckpt
+*.pth
+*.pt
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Misc ---
+*.bak
+*.tmp
