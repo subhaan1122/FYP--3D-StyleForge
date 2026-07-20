@@ -179,4 +179,3 @@ paths:
   output_dir: "outputs"
   temp_dir: "temp"
   upload_dir: "uploads"
-
